@@ -48,3 +48,6 @@ Cloudflare can block AI crawlers on your behalf, which would undo the whole poin
 ## Branch note
 
 These files were pushed to the branch `claude/project-thread-3ual3x`. Because the repo was empty, GitHub likely made it the default branch. Either point Cloudflare's production branch at it, or rename it to `main` in GitHub (Settings, Branches) and use `main`.
+
+## Security headers
+`tools/static/_headers` sets HSTS, a strict Content-Security-Policy (no scripts allowed, styles and images from this site only), X-Content-Type-Options, X-Frame-Options, Referrer-Policy and Permissions-Policy. Cloudflare Pages applies it automatically. If you ever add a script, a video embed or a font from another site, add that source to the Content-Security-Policy line or it will be blocked.

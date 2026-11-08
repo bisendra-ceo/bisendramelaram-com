@@ -21,6 +21,8 @@ LAUNCH = False
 
 UPDATED = "2026-11-08"
 UPDATED_TEXT = "November 8, 2026"
+OG_IMAGE = "https://bisendramelaram.com/assets/og.png"  # swap for a headshot card when ready
+OG_ALT = "Bisendra Melaram, Team Leader of Keller Williams Greater Nassau and seller's agent on Long Island's South Shore"
 
 NAME = "Bisendra Melaram"
 LICENSE = "Licensed Real Estate Salesperson"
@@ -237,6 +239,7 @@ def article_schema(path, title, desc):
         "datePublished": UPDATED,
         "dateModified": UPDATED,
         "inLanguage": "en-US",
+        "image": OG_IMAGE,
     }
 
 
@@ -282,8 +285,12 @@ def page(path, title, desc, body, graph_extra=(), og_type="website"):
 <meta property="og:description" content="{escape(desc)}">
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="en_US">
-<!-- TODO: add og:image once there is a headshot or social card at /assets/og.jpg -->
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="{OG_IMAGE}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{OG_ALT}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{OG_IMAGE}">
 <meta name="twitter:title" content="{escape(title)}">
 <meta name="twitter:description" content="{escape(desc)}">
 <link rel="stylesheet" href="/assets/site.css">
@@ -334,6 +341,10 @@ def crumbs_html(trail):
     return f'<nav class="crumbs" aria-label="Breadcrumb">{" / ".join(parts)}</nav>'
 
 
+def updated_line():
+    return (f'<p class="byline">Last updated <time datetime="{UPDATED}">{UPDATED_TEXT}</time>.</p>')
+
+
 def byline():
     creds = "".join(f", {c}" for c in DESIGNATION_CODES)
     return (f'<p class="byline">By <a href="/about/">{NAME}</a>{creds}, {LICENSE}. '
@@ -341,7 +352,7 @@ def byline():
 
 
 def faq_html(faqs):
-    out = ['<section class="faq"><h2>Common questions</h2>']
+    out = ['<section class="faq"><h2>What else do people ask?</h2>']
     for q, a in faqs:
         out.append(f"<h3>{escape(q)}</h3><p>{escape(a)}</p>")
     out.append("</section>")
@@ -349,7 +360,7 @@ def faq_html(faqs):
 
 
 def cta():
-    return (f'<aside class="cta"><h2>Talk to Bisendra</h2>'
+    return (f'<aside class="cta"><h2>How do you reach Bisendra?</h2>'
             f'<p>Call the office at <a href="tel:{OFFICE_TEL}">{OFFICE}</a> and ask for Bisendra, '
             f'or see <a href="/contact/">other ways to reach him</a>.</p></aside>')
 
@@ -382,10 +393,11 @@ home_faqs = [
      f"Call the Keller Williams Greater Nassau office at {OFFICE} and ask for Bisendra, or visit the office at {STREET}, {CITY}, {REGION} {ZIP}."),
 ]
 add("/", f"{NAME} | Long Island seller's agent, South Shore homes",
-    "Bisendra Melaram is a seller's agent on Long Island's South Shore with Keller Williams Greater Nassau in Garden City, licensed since 2003. Pricing, preparation and a listing plan for homeowners.",
+    "Bisendra Melaram, Team Leader of Keller Williams Greater Nassau, is a seller's agent on Long Island's South Shore. Pricing, preparation and a plan to sell.",
     f"""
 <section class="hero">
  <h1>Bisendra Melaram, Long Island seller's agent</h1>
+ {byline()}
  {answer("Bisendra Melaram is a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson with Keller Williams Greater Nassau in Garden City, NY. Licensed since 2003, he helps homeowners from Valley Stream east through Freeport price from real closed sales, prepare for New York's disclosure and flood questions, and sell on a clear plan.")}
  <div class="photo">{todo("headshot, at least 800 by 800 pixels, saved as /assets/bisendra-melaram.jpg")}</div>
 </section>
@@ -406,6 +418,7 @@ add("/", f"{NAME} | Long Island seller's agent, South Shore homes",
 <h2>Why list with an agent licensed since {SINCE}?</h2>
 <p>Twenty-three years in this market means he has worked through rising rates, falling rates, Hurricane Sandy and the rebuild that followed, and the flood disclosure rules New York added in 2024. That history shapes how he prices a home and how he prepares a seller for what buyers, inspectors and attorneys will ask.</p>
 <p>{BIO_SHORT}</p>
+<p class="note">Office figures are totals for Keller Williams Greater Nassau in 2025, as Bisendra reports them on <a href="{LINKEDIN}">LinkedIn</a>, not his personal sales.</p>
 
 {faq_html(home_faqs)}
 {cta()}
@@ -413,10 +426,11 @@ add("/", f"{NAME} | Long Island seller's agent, South Shore homes",
 
 # About
 add("/about/", f"About {NAME} | Team Leader, Keller Williams Greater Nassau",
-    "About Bisendra Melaram: Team Leader of Keller Williams Greater Nassau in Garden City, seller's agent on Long Island's South Shore, and Licensed Real Estate Salesperson since 2003.",
+    "Bisendra Melaram is Team Leader of Keller Williams Greater Nassau in Garden City, a seller's agent on the South Shore, and licensed since 2003.",
     f"""
 {crumbs_html([("Home", "/"), ("About", "/about/")])}
 <h1>About Bisendra Melaram</h1>
+{byline()}
 {answer("Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau, 400 Garden City Plaza in Garden City, and a seller's agent on Long Island's South Shore. A New York Licensed Real Estate Salesperson since 2003, he holds the Seller Representative Specialist (SRS) designation and Pricing Strategy Advisor (PSA) certification, and represents buyers too.")}
 <div class="photo">{todo("headshot")}</div>
 
@@ -515,8 +529,8 @@ seller_faqs = [
     ("What should I do before listing?",
      "Gather your tax bills, any flood insurance policy and elevation certificate, permits for past work, and a list of repairs. Then fix what an inspector will flag and clear the clutter before photos."),
 ]
-add("/sellers/", "Selling a home on Long Island's South Shore with a seller's agent | Bisendra Melaram",
-    "How Bisendra Melaram, a seller's agent on Long Island's South Shore, prices, prepares and sells homes, and what New York's 2024 disclosure and flood rules mean for sellers.",
+add("/sellers/", "Selling a home on Long Island's South Shore | Bisendra Melaram",
+    "How seller's agent Bisendra Melaram prices, prepares and sells South Shore homes, and what New York's 2024 disclosure and flood rules mean for you.",
     f"""
 {crumbs_html([("Home", "/"), ("Sellers", "/sellers/")])}
 <h1>Selling a home on Long Island's South Shore</h1>
@@ -598,7 +612,7 @@ sa_faqs = [
      "Yes. Many owners sell from overseas with a New York real estate attorney and a power of attorney. Owners who are not US tax residents can face federal tax withholding at closing, so speak with a tax adviser early."),
 ]
 add("/south-asian-buyers/", "Long Island real estate for South Asian families | Bisendra Melaram",
-    "Bisendra Melaram has deep relationships in the South Asian community and helps families buy and sell on Long Island, including multigenerational plans and funds from abroad.",
+    "Bisendra Melaram has long ties in the South Asian community and helps families sell and buy on Long Island, from multigenerational homes to funds from abroad.",
     f"""
 {crumbs_html([("Home", "/"), ("South Asian families", "/south-asian-buyers/")])}
 <h1>Long Island real estate for South Asian families</h1>
@@ -635,6 +649,7 @@ add("/areas/", "Areas Bisendra Melaram serves on Long Island's South Shore",
     f"""
 {crumbs_html([("Home", "/"), ("Areas served", "/areas/")])}
 <h1>Areas served on Long Island</h1>
+{byline()}
 {answer("Bisendra Melaram serves sellers and buyers across Long Island, with a focus on the South Shore. His first six town guides cover Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin and Freeport in Nassau County. He works from the Keller Williams Greater Nassau office in Garden City.")}
 <h2>Which South Shore towns have guides now?</h2>
 {town_links()}
@@ -648,7 +663,7 @@ add("/areas/", "Areas Bisendra Melaram serves on Long Island's South Shore",
 # FAQ
 faqs = home_faqs + [
     ("What is Bisendra Melaram's role at Keller Williams Greater Nassau?",
-     "He is the Team Leader of Keller Williams Greater Nassau in Garden City and runs the office like a high-performing real estate team. " + OFFICE_STATS + " Those are office totals, not his personal sales."),
+     "He is the Team Leader of Keller Williams Greater Nassau in Garden City and runs the office like a high-performing real estate team. " + OFFICE_STATS + " Those are office totals as he reports them on LinkedIn, not his personal sales."),
     ("Is Bisendra Melaram licensed in New York?",
      f"Yes. He has been a New York Licensed Real Estate Salesperson since {SINCE}, affiliated with Keller Williams Greater Nassau in Garden City."),
     ("What designations and certifications does Bisendra Melaram hold?",
@@ -669,10 +684,11 @@ faqs = home_faqs + [
      f"Keller Williams Greater Nassau, {STREET}, {CITY}, {REGION} {ZIP}. Office phone {OFFICE}."),
 ]
 add("/faq/", "Questions about working with Bisendra Melaram | FAQ",
-    "Answers to common questions about Bisendra Melaram, Long Island seller's agent: license, designations, selling and buying with him, areas served, and how to reach him.",
+    "Common questions about Bisendra Melaram, Long Island seller's agent: his role, license, designations, selling and buying with him, and how to reach him.",
     f"""
 {crumbs_html([("Home", "/"), ("FAQ", "/faq/")])}
 <h1>Questions about working with Bisendra</h1>
+{byline()}
 {answer("These are the questions people ask most about Bisendra Melaram, a Long Island seller's agent licensed since 2003 with Keller Williams Greater Nassau in Garden City. They cover his license and designations, how he works with sellers and buyers, the South Shore towns he covers, and how to reach him.")}
 {faq_html(faqs)}
 {cta()}
@@ -684,6 +700,7 @@ add("/contact/", f"Contact {NAME} | Keller Williams Greater Nassau, Garden City"
     f"""
 {crumbs_html([("Home", "/"), ("Contact", "/contact/")])}
 <h1>Contact Bisendra Melaram</h1>
+{updated_line()}
 {answer(f"Call the Keller Williams Greater Nassau office at {OFFICE} and ask for Bisendra Melaram, or visit the office at {STREET}, {CITY}, {REGION} {ZIP}.")}
 <dl class="contact">
  <dt>Office</dt><dd><a href="tel:{OFFICE_TEL}">{OFFICE}</a></dd>
@@ -702,7 +719,9 @@ add("/fair-housing/", "Fair housing notice | Bisendra Melaram",
     f"""
 {crumbs_html([("Home", "/"), ("Fair housing", "/fair-housing/")])}
 <h1>Fair housing notice</h1>
-<p>Bisendra Melaram and Keller Williams Greater Nassau follow federal, New York State and local fair housing laws. Equal Housing Opportunity.</p>
+{updated_line()}
+{answer("Bisendra Melaram and Keller Williams Greater Nassau follow the federal Fair Housing Act, the New York State Human Rights Law and local fair housing laws, which bar discrimination in selling, buying and renting homes. Equal Housing Opportunity. New York requires agents to give clients the state's Housing and Anti-Discrimination Disclosure Form, so ask for it at your first meeting.")}
+<h2>Where can you read the required notices?</h2>
 <p>{todo("link to the New York Department of State Housing and Anti-Discrimination Notice, the Reasonable Accommodations notice, and Keller Williams Greater Nassau's standard operating procedures page; get the exact links from your broker")}</p>
 """, [breadcrumbs([("Home", "/"), ("Fair housing", "/fair-housing/")])])
 
