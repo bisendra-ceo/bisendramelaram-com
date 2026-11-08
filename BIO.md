@@ -5,7 +5,7 @@ Use these word for word on profiles (Zillow, Realtor.com, Homes.com, Google, Lin
 ## One line
 Bisendra Melaram, Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. Licensed Real Estate Salesperson since 2003.
 
-## Short (about 80 words)
+## Short (about 80 words), approved by Bisendra Nov 8, 2026. Use as written.
 Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. He runs the office like a high-performing real estate team, and in 2025 it closed 545 transactions totaling more than $425 million in sales volume. A Licensed Real Estate Salesperson since 2003, he holds the Seller Representative Specialist (SRS) designation and the Pricing Strategy Advisor (PSA) certification, along with SRES, ABR, SFR, MRP, AHWD and RSPS.
 
 ## Long (about 232 words)

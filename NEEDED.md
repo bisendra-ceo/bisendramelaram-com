@@ -5,7 +5,7 @@ Each item matches a yellow `[To fill: ...]` box on the site.
 ## Needed to launch
 1. Headshot, at least 800 by 800 pixels (`site/assets/bisendra-melaram.jpg`). A text social card (`og.png`) is in place until then.
 2. Done: LinkedIn About section received.
-3. Done: seller-first bio with "Team Leader of Keller Williams Greater Nassau" and the 2025 office results credited to the office (see BIO.md). Please approve the short bio. Have your broker OK "Team Leader" in advertising; it always appears next to your license type.
+3. Done: seller-first bio with "Team Leader of Keller Williams Greater Nassau" and the 2025 office results credited to the office (see BIO.md). Short bio approved Nov 8, 2026. Have your broker OK "Team Leader" in advertising; it always appears next to your license type.
 4. Public email address. Cell number only if you want it public.
 5. Fair housing notice and KW Greater Nassau SOP links, from your broker.
 
