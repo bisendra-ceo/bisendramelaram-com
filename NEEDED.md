@@ -10,7 +10,7 @@ Each item matches a yellow `[To fill: ...]` box on the site.
 5. Fair housing notice and KW Greater Nassau SOP links, from your broker.
 
 ## Needed to rank
-6. Done: LinkedIn, Zillow and Substack are in `SAME_AS`. Still needed: the full Google Business Profile URL (the share.google link works for people but is a redirect, so it isn't in the schema), plus Realtor.com, Homes.com, YouTube and Instagram if you want them.
+6. Done: LinkedIn, Zillow, Substack and your Google Business Profile are in `SAME_AS`. Add Realtor.com, Homes.com, YouTube and Instagram if you want them.
 7. Other designations to list, with the year earned (the strategy doc mentions AHWD; confirm).
 8. Languages you work in with clients, if any besides English.
 9. Other areas to name (Garden City, central Nassau, Queens?).

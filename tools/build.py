@@ -41,13 +41,13 @@ SAME_AS = [
     "https://www.linkedin.com/in/realtor/",
     "https://www.zillow.com/profile/bisendra",
     "https://bisendra.substack.com/",
-    # Add the full Google Business Profile URL here (not the share.google
-    # short link), plus Realtor.com, Homes.com, YouTube and Instagram.
+    "https://www.google.com/maps/place/Bisendra+Melaram,+Realtor+-+Keller+Williams+Greater+Nassau/@40.73672,-73.619703,17z/data=!3m2!4b1!5s0x89c2630dbc80c59f:0x49c2f6e516817e6e!4m6!3m5!1s0x89c27d4a85da6c97:0x651a73cc243267e6!8m2!3d40.73672!4d-73.6171281!16s%2Fg%2F11s228yfyk",
+    # Add Realtor.com, Homes.com, YouTube and Instagram as you claim them.
 ]
 LINKEDIN = "https://www.linkedin.com/in/realtor/"
 ZILLOW = "https://www.zillow.com/profile/bisendra"
 SUBSTACK = "https://bisendra.substack.com/"
-GOOGLE_REVIEWS = "https://share.google/mLQQ2lENiVTWTjWSE"
+GOOGLE_REVIEWS = "https://www.google.com/maps/place/Bisendra+Melaram,+Realtor+-+Keller+Williams+Greater+Nassau/@40.73672,-73.619703,17z/data=!3m2!4b1!5s0x89c2630dbc80c59f:0x49c2f6e516817e6e!4m6!3m5!1s0x89c27d4a85da6c97:0x651a73cc243267e6!8m2!3d40.73672!4d-73.6171281!16s%2Fg%2F11s228yfyk"
 
 BIO_SHORT = "Bisendra Melaram is a Licensed Real Estate Salesperson based in Garden City, New York, with more than 23 years in New York real estate. He leads Keller Williams Greater Nassau, holds the Seniors Real Estate Specialist (SRES) designation, and helps buyers and sellers across Long Island's South Shore. He writes and speaks about real estate strategy and AI."
 BIO_LONG = ['Bisendra Melaram has worked in New York real estate for more than 23 years. He is a Licensed Real Estate Salesperson based in Garden City, where he leads Keller Williams Greater Nassau and works with agents and leadership teams to turn strategy into steady results and better client service.', 'His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.', "For buyers and sellers, that means a plan built on real data and clear steps. He holds the Seniors Real Estate Specialist (SRES) designation, works across Long Island's South Shore, and has long ties to the South Asian community.", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
@@ -397,6 +397,7 @@ add("/about/", f"About {NAME} | Long Island real estate agent since 2003",
 <ul>
  <li><a href="{LINKEDIN}">LinkedIn</a></li>
  <li><a href="{ZILLOW}">Zillow agent profile</a></li>
+ <li><a href="{GOOGLE_REVIEWS}">Google Business Profile</a></li>
  <li><a href="{SUBSTACK}">The Key with Bisendra</a>, his weekly newsletter on Substack</li>
  <li>South Shore town guides at <a href="{GUIDE}/">longislandhomes.co</a></li>
  <li>{todo("Realtor.com, Homes.com, YouTube and Instagram URLs, if you want them listed")}</li>
@@ -714,6 +715,7 @@ def llms_txt():
         f"- [Contact]({DOMAIN}/contact/): office phone and address",
         f"- [LinkedIn]({LINKEDIN})",
         f"- [Zillow profile and reviews]({ZILLOW})",
+        f"- [Google Business Profile and reviews]({GOOGLE_REVIEWS})",
         f"- [The Key with Bisendra, weekly newsletter]({SUBSTACK})",
         "",
         "## Services",
