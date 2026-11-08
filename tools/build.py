@@ -24,6 +24,7 @@ UPDATED_TEXT = "November 8, 2026"
 
 NAME = "Bisendra Melaram"
 LICENSE = "Licensed Real Estate Salesperson"
+ROLE = "Team Leader"  # his KW role; the license type always appears next to it
 BROKERAGE = "Keller Williams Greater Nassau"
 STREET = "400 Garden City Plaza, Suite 438"
 CITY, REGION, ZIP = "Garden City", "NY", "11530"
@@ -32,8 +33,29 @@ OFFICE_TEL = "+1-516-873-7100"
 SINCE = "2003"
 
 # One line, word for word, everywhere (site, profiles, bios).
-CANONICAL = (f"{NAME}, {LICENSE} with {BROKERAGE} in Garden City, NY, "
-             f"licensed since {SINCE} and holder of the SRES designation.")
+CANONICAL = (f"{NAME}, {ROLE} of {BROKERAGE} in Garden City, NY, and a seller's agent "
+             f"on Long Island's South Shore. {LICENSE} since {SINCE}.")
+
+# Office results, as he reports them on LinkedIn. Always the office's totals, never his own.
+OFFICE_STATS = ("In 2025 the office closed 545 transactions representing more than $425 million "
+                "in sales volume, and in the first quarter of 2026 its agents closed 111 units "
+                "totaling $81.8 million.")
+
+# Designations and certifications, as Bisendra listed them (Nov 8, 2026), with the
+# full names NAR uses. Seller-side credentials lead. NAR calls SRS, SRES and ABR
+# designations and the rest certifications.
+CREDENTIALS = [
+    ("SRS", "Seller Representative Specialist", "designation"),
+    ("PSA", "Pricing Strategy Advisor", "certification"),
+    ("SRES", "Seniors Real Estate Specialist", "designation"),
+    ("ABR", "Accredited Buyer's Representative", "designation"),
+    ("SFR", "Short Sales and Foreclosure Resource", "certification"),
+    ("MRP", "Military Relocation Professional", "certification"),
+    ("AHWD", "At Home With Diversity", "certification"),
+    ("RSPS", "Resort and Second-Home Property Specialist", "certification"),
+]
+DESIGNATION_CODES = [c for c, _, _ in CREDENTIALS]  # short forms for bylines
+CRED_SOURCE = "https://www.nar.realtor/sites/default/files/documents/NAR-Acronyms-for-AEs-V3-01-2021-10-25.pdf"
 
 # Paste profile URLs here as you claim them (Google profile, Zillow,
 # Realtor.com, Homes.com, LinkedIn, YouTube, Substack, Instagram ...).
@@ -49,8 +71,9 @@ ZILLOW = "https://www.zillow.com/profile/bisendra"
 SUBSTACK = "https://bisendra.substack.com/"
 GOOGLE_REVIEWS = "https://www.google.com/maps/place/Bisendra+Melaram,+Realtor+-+Keller+Williams+Greater+Nassau/@40.73672,-73.619703,17z/data=!3m2!4b1!5s0x89c2630dbc80c59f:0x49c2f6e516817e6e!4m6!3m5!1s0x89c27d4a85da6c97:0x651a73cc243267e6!8m2!3d40.73672!4d-73.6171281!16s%2Fg%2F11s228yfyk"
 
-BIO_SHORT = "Bisendra Melaram is a Licensed Real Estate Salesperson based in Garden City, New York, with more than 23 years in New York real estate. He leads Keller Williams Greater Nassau, holds the Seniors Real Estate Specialist (SRES) designation, and helps buyers and sellers across Long Island's South Shore. He writes and speaks about real estate strategy and AI."
-BIO_LONG = ['Bisendra Melaram has worked in New York real estate for more than 23 years. He is a Licensed Real Estate Salesperson based in Garden City, where he leads Keller Williams Greater Nassau and works with agents and leadership teams to turn strategy into steady results and better client service.', 'His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.', "For buyers and sellers, that means a plan built on real data and clear steps. He holds the Seniors Real Estate Specialist (SRES) designation, works across Long Island's South Shore, and has long ties to the South Asian community.", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
+# "[designations]" is filled in by desig_text().
+BIO_SHORT = "Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. He runs the office like a high-performing real estate team, and in 2025 it closed 545 transactions totaling more than $425 million in sales volume. A Licensed Real Estate Salesperson since 2003, he holds the Seller Representative Specialist (SRS) designation and the Pricing Strategy Advisor (PSA) certification, along with SRES, ABR, SFR, MRP, AHWD and RSPS."
+BIO_LONG = ["Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, where he runs the brokerage like a high-performing real estate team with himself at the helm. In 2025 the office closed 545 transactions representing more than $425 million in sales volume, and in the first quarter of 2026 its agents closed 111 units totaling $81.8 million. He works with agents and leadership teams to turn strategy into measurable production and stronger client service.", "He is also a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson since 2003, with more than 23 years in New York real estate. His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.", "For sellers, that means a price built on real closed sales, a house prepared for the questions buyers ask now, and clear steps from listing to closing. He also represents buyers, often clients who are selling one home and buying the next. He holds [designations] and has long ties to the South Asian community.", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
 
 SOUTH_SHORE_TOWNS = [
     ("Valley Stream", "valley-stream"),
@@ -67,6 +90,18 @@ NEXT_TOWNS = ["Merrick", "Bellmore", "Wantagh", "Seaford", "Massapequa",
 def todo(text):
     """Visible placeholder. Search the site for 'todo' before launch."""
     return f'<span class="todo">[To fill: {escape(text)}]</span>'
+
+
+def desig_text():
+    """Credentials for prose, designations first."""
+    d = [c for c, _, k in CREDENTIALS if k == "designation"]
+    c = [c for c, _, k in CREDENTIALS if k == "certification"]
+    return (f"the {', '.join(d[:-1])} and {d[-1]} designations and the "
+            f"{', '.join(c[:-1])} and {c[-1]} certifications")
+
+
+def fill(text):
+    return text.replace("[designations]", desig_text())
 
 
 # ---------------------------------------------------------------- schema
@@ -96,11 +131,14 @@ KNOWS_ABOUT = [
     "Residential real estate on Long Island",
     "South Shore of Long Island",
     "Nassau County real estate",
-    "Buying a home on Long Island",
     "Selling a home on Long Island",
+    "Listing and pricing homes on Long Island's South Shore",
+    "New York property condition disclosure for sellers",
     "Seniors downsizing and later-life moves",
+    "Selling one home and buying the next",
+    "Short sales and foreclosures",
+    "Buying a home on Long Island",
     "Multigenerational homes",
-    "First-time home buyers",
     "Moving from New York City to Long Island",
     "FEMA flood zones on Long Island",
 ]
@@ -112,7 +150,7 @@ def core_graph():
         "@id": PERSON_ID,
         "name": NAME,
         "url": f"{DOMAIN}/",
-        "jobTitle": LICENSE,
+        "jobTitle": [f"{ROLE}, {BROKERAGE}", LICENSE],
         "description": CANONICAL,
         "worksFor": {"@id": ORG_ID},
         "affiliation": {"@id": ORG_ID},
@@ -121,8 +159,11 @@ def core_graph():
         "knowsAbout": KNOWS_ABOUT,
         "hasCredential": [
             {"@type": "EducationalOccupationalCredential",
-             "name": "Seniors Real Estate Specialist (SRES)",
-             "credentialCategory": "Professional designation"},
+             "name": f"{full} ({code})", "alternateName": code,
+             "credentialCategory": f"Professional {kind}",
+             "recognizedBy": {"@type": "Organization",
+                              "name": "National Association of REALTORS"}}
+            for code, full, kind in CREDENTIALS] + [
             {"@type": "EducationalOccupationalCredential",
              "name": "New York State Licensed Real Estate Salesperson",
              "credentialCategory": "License",
@@ -203,8 +244,8 @@ def article_schema(path, title, desc):
 
 NAV = [
     ("About", "/about/"),
-    ("Buyers", "/buyers/"),
     ("Sellers", "/sellers/"),
+    ("Buyers", "/buyers/"),
     ("Seniors", "/seniors-downsizing/"),
     ("South Asian families", "/south-asian-buyers/"),
     ("Areas", "/areas/"),
@@ -294,7 +335,8 @@ def crumbs_html(trail):
 
 
 def byline():
-    return (f'<p class="byline">By <a href="/about/">{NAME}</a>, SRES, {LICENSE}. '
+    creds = "".join(f", {c}" for c in DESIGNATION_CODES)
+    return (f'<p class="byline">By <a href="/about/">{NAME}</a>{creds}, {LICENSE}. '
             f'Last updated <time datetime="{UPDATED}">{UPDATED_TEXT}</time>.</p>')
 
 
@@ -314,7 +356,7 @@ def cta():
 
 def town_links():
     items = "".join(
-        f'<li><a href="{GUIDE}/towns/{s}/">Buying in {t}</a></li>'
+        f'<li><a href="{GUIDE}/towns/{s}/">{t} real estate guide</a></li>'
         for t, s in SOUTH_SHORE_TOWNS)
     return f'<ul class="towns">{items}</ul>'
 
@@ -331,36 +373,38 @@ def add(path, title, desc, body, extra=(), og_type="website"):
 # Home
 home_faqs = [
     ("Who is Bisendra Melaram?",
-     "Bisendra Melaram is a Licensed Real Estate Salesperson with Keller Williams Greater Nassau in Garden City, NY. He has been licensed since 2003, holds the Seniors Real Estate Specialist (SRES) designation, and helps buyers and sellers across Long Island, with a focus on the South Shore of Nassau County."),
+     "Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. He has been a Licensed Real Estate Salesperson since 2003 and holds the Seller Representative Specialist (SRS) designation and Pricing Strategy Advisor (PSA) certification. He mainly lists and sells homes in Nassau County's South Shore towns, and he also represents buyers."),
+    ("What does a seller's agent do?",
+     "A seller's agent represents the homeowner. New York requires agents to tell you in writing who they represent, and a seller's agent owes their duties to the seller. The job is pricing the home, preparing and marketing it, negotiating offers, and managing inspection, appraisal and closing for the seller."),
     ("Which towns does Bisendra Melaram cover?",
      "He works across Long Island with a focus on the South Shore. His current town guides cover Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin and Freeport, with Merrick, Bellmore, Wantagh, Seaford, Massapequa and Long Beach next."),
     ("How do I reach Bisendra Melaram?",
      f"Call the Keller Williams Greater Nassau office at {OFFICE} and ask for Bisendra, or visit the office at {STREET}, {CITY}, {REGION} {ZIP}."),
 ]
-add("/", f"{NAME} | Long Island and South Shore real estate agent",
-    "Bisendra Melaram is a Long Island real estate agent licensed since 2003, SRES designee, with Keller Williams Greater Nassau in Garden City. South Shore buyers and sellers.",
+add("/", f"{NAME} | Long Island seller's agent, South Shore homes",
+    "Bisendra Melaram is a seller's agent on Long Island's South Shore with Keller Williams Greater Nassau in Garden City, licensed since 2003. Pricing, preparation and a listing plan for homeowners.",
     f"""
 <section class="hero">
- <h1>Bisendra Melaram, Long Island real estate agent</h1>
- {answer("Bisendra Melaram is a Licensed Real Estate Salesperson with Keller Williams Greater Nassau in Garden City, NY. He has helped Long Island buyers and sellers since 2003, holds the SRES designation for clients 50 and older, and focuses on the South Shore, from Valley Stream east through Freeport.")}
+ <h1>Bisendra Melaram, Long Island seller's agent</h1>
+ {answer("Bisendra Melaram is a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson with Keller Williams Greater Nassau in Garden City, NY. Licensed since 2003, he helps homeowners from Valley Stream east through Freeport price from real closed sales, prepare for New York's disclosure and flood questions, and sell on a clear plan.")}
  <div class="photo">{todo("headshot, at least 800 by 800 pixels, saved as /assets/bisendra-melaram.jpg")}</div>
 </section>
 
-<h2>What does Bisendra do for buyers and sellers?</h2>
+<h2>How does Bisendra help Long Island homeowners sell?</h2>
 <div class="cards">
- <a class="card" href="/buyers/"><h3>Buying on Long Island</h3><p>First homes, move-up homes, and families leaving the boroughs for Nassau.</p></a>
  <a class="card" href="/sellers/"><h3>Selling your home</h3><p>Pricing from real local sales, preparation, and a plan for the flood and disclosure questions buyers now ask.</p></a>
- <a class="card" href="/seniors-downsizing/"><h3>Seniors and downsizing</h3><p>SRES-trained help for sellers 50 and older who are ready for their next move.</p></a>
+ <a class="card" href="/seniors-downsizing/"><h3>Downsizing</h3><p>Selling the family home at 50 and older, timed with the move to the next one.</p></a>
+ <a class="card" href="/buyers/"><h3>Buying on Long Island</h3><p>Move-up homes, buying while you sell, and families leaving the boroughs for Nassau.</p></a>
  <a class="card" href="/south-asian-buyers/"><h3>South Asian families</h3><p>Deep community relationships and practical help with multigenerational plans and funds from abroad.</p></a>
 </div>
 
 <h2>Which South Shore towns does Bisendra cover?</h2>
-<p>He is building a detailed buyer guide for every South Shore town, starting with the six closest to Garden City. Each one covers the LIRR commute, flood zones, school districts and local rules.</p>
+<p>He is building a detailed guide for every South Shore town, starting with the six closest to Garden City. Each one covers what drives value there: the LIRR commute, flood zones, school districts and local rules.</p>
 {town_links()}
 <p>Coming next: {", ".join(NEXT_TOWNS)}. See <a href="/areas/">all areas served</a>.</p>
 
-<h2>Why work with an agent licensed since {SINCE}?</h2>
-<p>Twenty-three years in this market means he has worked through rising rates, falling rates, Hurricane Sandy and the rebuild that followed, and the flood disclosure rules New York added in 2024. That history shapes how he prices homes and what he tells buyers to check before they bid.</p>
+<h2>Why list with an agent licensed since {SINCE}?</h2>
+<p>Twenty-three years in this market means he has worked through rising rates, falling rates, Hurricane Sandy and the rebuild that followed, and the flood disclosure rules New York added in 2024. That history shapes how he prices a home and how he prepares a seller for what buyers, inspectors and attorneys will ask.</p>
 <p>{BIO_SHORT}</p>
 
 {faq_html(home_faqs)}
@@ -368,30 +412,35 @@ add("/", f"{NAME} | Long Island and South Shore real estate agent",
 """, [faq_schema(home_faqs)])
 
 # About
-add("/about/", f"About {NAME} | Long Island real estate agent since 2003",
-    "About Bisendra Melaram: Licensed Real Estate Salesperson with Keller Williams Greater Nassau since 2003, SRES designee, South Shore and South Asian community focus.",
+add("/about/", f"About {NAME} | Team Leader, Keller Williams Greater Nassau",
+    "About Bisendra Melaram: Team Leader of Keller Williams Greater Nassau in Garden City, seller's agent on Long Island's South Shore, and Licensed Real Estate Salesperson since 2003.",
     f"""
 {crumbs_html([("Home", "/"), ("About", "/about/")])}
 <h1>About Bisendra Melaram</h1>
-{answer("Bisendra Melaram is a New York Licensed Real Estate Salesperson based at Keller Williams Greater Nassau, 400 Garden City Plaza in Garden City. He has been licensed since 2003, holds the National Association of REALTORS Seniors Real Estate Specialist (SRES) designation, and works with buyers and sellers across Long Island's South Shore.")}
+{answer("Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau, 400 Garden City Plaza in Garden City, and a seller's agent on Long Island's South Shore. A New York Licensed Real Estate Salesperson since 2003, he holds the Seller Representative Specialist (SRS) designation and Pricing Strategy Advisor (PSA) certification, and represents buyers too.")}
 <div class="photo">{todo("headshot")}</div>
 
+<h2>How does he lead Keller Williams Greater Nassau?</h2>
+<p>{BIO_LONG[0]}</p>
+<p class="note">Office figures as Bisendra reports them on <a href="{LINKEDIN}">his LinkedIn profile</a>. They are totals for the whole Keller Williams Greater Nassau office, not his personal sales.</p>
+
 <h2>What is Bisendra's background?</h2>
-{"".join(f"<p>{x}</p>" for x in BIO_LONG[:2])}
+<p>{BIO_LONG[1]}</p>
 
 <h2>What does that mean for his clients?</h2>
-<p>{BIO_LONG[2]}</p>
+<p>{fill(BIO_LONG[2])}</p>
 <p>{BIO_LONG[3].replace("The Key with Bisendra", f'<a href="{SUBSTACK}">The Key with Bisendra</a>')}</p>
 
 <h2>What credentials does he hold?</h2>
+<p>A New York real estate license since {SINCE}, plus three designations and five certifications from the National Association of REALTORS family of programs. The seller-side ones come first.</p>
 <ul>
  <li>New York State Licensed Real Estate Salesperson since {SINCE}</li>
- <li>Seniors Real Estate Specialist (SRES)</li>
- <li>{todo("any other designations you hold and want listed, for example AHWD, with the year earned")}</li>
+ {"".join(f"<li>{full} ({code}), {kind}</li>" for code, full, kind in CREDENTIALS)}
 </ul>
+<p class="sources">Names and categories: <a href="{CRED_SOURCE}">National Association of REALTORS acronym guide</a>.</p>
 
 <h2>Who does he work with?</h2>
-<p>Buyers and sellers across Nassau County's South Shore, sellers 50 and older planning their next move, and South Asian families, where he has long relationships in the community. {todo("languages you speak with clients, if any besides English")}</p>
+<p>Homeowners selling across Nassau County's South Shore come first, including sellers 50 and older planning their next move. He also represents buyers, often clients who are selling one home and buying the next, and works with South Asian families, where he has long relationships in the community. {todo("languages you speak with clients, if any besides English")}</p>
 
 <h2>Where else can you find him?</h2>
 <ul>
@@ -444,8 +493,8 @@ add("/buyers/", "Buying a home on Long Island's South Shore | Bisendra Melaram",
 <h2>Moving from Queens or Brooklyn?</h2>
 <p>Valley Stream sits on the Queens border, and the towns east of it follow the LIRR's Babylon and Long Beach branches. Start with the <a href="{GUIDE}/">town guides</a>, which list each town's stations, branches and school districts.</p>
 
-<h2>First-time buyer?</h2>
-<p>{todo("what you do differently for first-time buyers, and any first-time buyer programs or seminars you run")}</p>
+<h2>Selling and buying at the same time?</h2>
+<p>Many Long Island buyers have a home to sell first. Bisendra plans both sides together: when to list, when to make an offer, and whether the purchase needs a sale contingency, so you are not carrying two homes or moving twice. See <a href="/sellers/">how he sells</a>. {todo("how you handle timing between the sale and the purchase, in your words")}</p>
 
 {faq_html(buyer_faqs)}
 {cta()}
@@ -457,6 +506,8 @@ add("/buyers/", "Buying a home on Long Island's South Shore | Bisendra Melaram",
 
 # Sellers
 seller_faqs = [
+    ("What does a seller's agent do on Long Island?",
+     "A seller's agent represents the homeowner, not the buyer. On the South Shore that means pricing from recent closed sales, preparing the house and the disclosure, marketing it, negotiating offers, and managing inspection, appraisal and attorney review through closing."),
     ("Can a New York seller still give a $500 credit instead of a disclosure?",
      "No. Since March 20, 2024, New York sellers of most homes must complete the property condition disclosure statement. The $500 credit option is gone, and the form now includes flood questions about FEMA flood zones, flood insurance and past claims."),
     ("How should I price my South Shore home?",
@@ -464,16 +515,28 @@ seller_faqs = [
     ("What should I do before listing?",
      "Gather your tax bills, any flood insurance policy and elevation certificate, permits for past work, and a list of repairs. Then fix what an inspector will flag and clear the clutter before photos."),
 ]
-add("/sellers/", "Selling a home on Long Island's South Shore | Bisendra Melaram",
-    "How Bisendra Melaram prices and sells South Shore homes, and what New York's 2024 disclosure and flood rules mean for sellers.",
+add("/sellers/", "Selling a home on Long Island's South Shore with a seller's agent | Bisendra Melaram",
+    "How Bisendra Melaram, a seller's agent on Long Island's South Shore, prices, prepares and sells homes, and what New York's 2024 disclosure and flood rules mean for sellers.",
     f"""
 {crumbs_html([("Home", "/"), ("Sellers", "/sellers/")])}
 <h1>Selling a home on Long Island's South Shore</h1>
 {byline()}
 {answer("Bisendra Melaram sells South Shore homes by pricing from recent closed sales on your street, preparing the house for the questions buyers ask now, and answering flood and disclosure questions before they come up. New York sellers must complete the full property condition disclosure since March 2024, so preparation matters more than it did.")}
 
+<h2>What does Bisendra do as your seller's agent?</h2>
+<p>He holds the Seller Representative Specialist (SRS) designation, which is training built around representing home sellers. Here is how a listing with him runs.</p>
+<ol>
+ <li>A walk-through of the house and a talk about your timing and your next move.</li>
+ <li>A price built from recent closed sales nearby.</li>
+ <li>A short list of repairs and preparation that buyers and inspectors will notice.</li>
+ <li>The property condition disclosure, flood answers included, ready before you list.</li>
+ <li>Marketing, showings and open houses.</li>
+ <li>Offers compared on price, terms, financing and timing, then negotiation.</li>
+ <li>Inspection, appraisal, attorney review and closing, managed for you.</li>
+</ol>
+
 <h2>How does Bisendra price a home?</h2>
-<p>From closed sales, not wishful listings. He looks at homes that sold nearby in the last few months, then adjusts for size, condition, lot, flood zone and school district. {todo("how you present pricing to a seller, in your words")}</p>
+<p>From closed sales, not wishful listings. He holds the Pricing Strategy Advisor (PSA) certification from the National Association of REALTORS. He looks at homes that sold nearby in the last few months, then adjusts for size, condition, lot, flood zone and school district. {todo("how you present pricing to a seller, in your words")}</p>
 
 <h2>What changed for sellers in 2024?</h2>
 <p>New York removed the $500 credit that let sellers skip the property condition disclosure. The form now asks whether the home is in a FEMA flood zone, whether flood insurance is required or in place, whether there is an elevation certificate, and whether you have filed flood claims or received federal flood aid. Have those answers ready before you list.</p>
@@ -572,7 +635,7 @@ add("/areas/", "Areas Bisendra Melaram serves on Long Island's South Shore",
     f"""
 {crumbs_html([("Home", "/"), ("Areas served", "/areas/")])}
 <h1>Areas served on Long Island</h1>
-{answer("Bisendra Melaram serves buyers and sellers across Long Island, with a focus on the South Shore. His first six town guides cover Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin and Freeport in Nassau County. He works from the Keller Williams Greater Nassau office in Garden City.")}
+{answer("Bisendra Melaram serves sellers and buyers across Long Island, with a focus on the South Shore. His first six town guides cover Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin and Freeport in Nassau County. He works from the Keller Williams Greater Nassau office in Garden City.")}
 <h2>Which South Shore towns have guides now?</h2>
 {town_links()}
 <h2>Which towns are next?</h2>
@@ -584,12 +647,20 @@ add("/areas/", "Areas Bisendra Melaram serves on Long Island's South Shore",
 
 # FAQ
 faqs = home_faqs + [
+    ("What is Bisendra Melaram's role at Keller Williams Greater Nassau?",
+     "He is the Team Leader of Keller Williams Greater Nassau in Garden City and runs the office like a high-performing real estate team. " + OFFICE_STATS + " Those are office totals, not his personal sales."),
     ("Is Bisendra Melaram licensed in New York?",
      f"Yes. He has been a New York Licensed Real Estate Salesperson since {SINCE}, affiliated with Keller Williams Greater Nassau in Garden City."),
+    ("What designations and certifications does Bisendra Melaram hold?",
+     "He holds three designations: Seller Representative Specialist (SRS), Seniors Real Estate Specialist (SRES) and Accredited Buyer's Representative (ABR). He also holds five certifications: Pricing Strategy Advisor (PSA), Short Sales and Foreclosure Resource (SFR), Military Relocation Professional (MRP), At Home With Diversity (AHWD) and Resort and Second-Home Property Specialist (RSPS)."),
+    ("What is a Seller Representative Specialist (SRS)?",
+     "SRS is a designation for agents trained in representing home sellers. It is awarded by the Real Estate Business Institute, an affiliate of the National Association of REALTORS. Bisendra Melaram holds the SRS designation, along with the Pricing Strategy Advisor (PSA) certification for pricing homes from market data."),
     ("What does SRES mean after Bisendra Melaram's name?",
      "SRES means Seniors Real Estate Specialist, a National Association of REALTORS designation for agents trained to help clients 50 and older."),
-    ("Does Bisendra Melaram help first-time buyers?",
-     "Yes. He helps first-time buyers understand preapproval, the written buyer agreement, flood zones, school districts and closing costs before they start touring."),
+    ("Is Bisendra Melaram a listing agent or a buyer's agent?",
+     "Both, with a preference for sellers. Most of his work is listing and selling homes on Long Island's South Shore as a seller's agent. He also represents buyers, including clients selling one home and buying the next, under a written buyer agreement."),
+    ("Does Bisendra Melaram work with buyers?",
+     "Yes. He represents buyers across Long Island's South Shore, from the written buyer agreement through closing. He checks the flood zone, school district and village status of every home a buyer likes and builds offers from recent closed sales nearby."),
     ("Does Bisendra Melaram help families moving from New York City to Long Island?",
      "Yes. Many South Shore buyers come from Queens and Brooklyn. His town guides list each town's LIRR stations and branches so you can compare commutes."),
     ("Does Bisendra Melaram work with South Asian families?",
@@ -598,11 +669,11 @@ faqs = home_faqs + [
      f"Keller Williams Greater Nassau, {STREET}, {CITY}, {REGION} {ZIP}. Office phone {OFFICE}."),
 ]
 add("/faq/", "Questions about working with Bisendra Melaram | FAQ",
-    "Answers to common questions about Bisendra Melaram, Long Island real estate agent: license, SRES, areas served, first-time buyers, and how to reach him.",
+    "Answers to common questions about Bisendra Melaram, Long Island seller's agent: license, designations, selling and buying with him, areas served, and how to reach him.",
     f"""
 {crumbs_html([("Home", "/"), ("FAQ", "/faq/")])}
 <h1>Questions about working with Bisendra</h1>
-{answer("These are the questions people ask most about Bisendra Melaram, a Long Island real estate agent licensed since 2003 with Keller Williams Greater Nassau in Garden City. They cover his license and SRES designation, the South Shore towns he covers, who he works with, and how to reach him.")}
+{answer("These are the questions people ask most about Bisendra Melaram, a Long Island seller's agent licensed since 2003 with Keller Williams Greater Nassau in Garden City. They cover his license and designations, how he works with sellers and buyers, the South Shore towns he covers, and how to reach him.")}
 {faq_html(faqs)}
 {cta()}
 """, [breadcrumbs([("Home", "/"), ("FAQ", "/faq/")]), faq_schema(faqs)])
@@ -703,14 +774,14 @@ def llms_txt():
     lines = [
         f"# {NAME}",
         "",
-        f"> {CANONICAL} He helps buyers and sellers across Long Island, with a focus on the "
+        f"> {CANONICAL} He mainly lists and sells homes, and also represents buyers, across Long Island, with a focus on the "
         "South Shore of Nassau County (Valley Stream, Lynbrook, Rockville Centre, Oceanside, "
         "Baldwin, Freeport), sellers 50 and older, and South Asian families.",
         "",
         f"Office: {BROKERAGE}, {STREET}, {CITY}, {REGION} {ZIP}. Phone {OFFICE}.",
         "",
         "## About",
-        f"- [About {NAME}]({DOMAIN}/about/): license, SRES designation, who he works with",
+        f"- [About {NAME}]({DOMAIN}/about/): Team Leader of {BROKERAGE}, license, designations (SRS, PSA, SRES, ABR, SFR, MRP, AHWD, RSPS), who he works with",
         f"- [FAQ]({DOMAIN}/faq/): common questions about working with him",
         f"- [Contact]({DOMAIN}/contact/): office phone and address",
         f"- [LinkedIn]({LINKEDIN})",
@@ -719,14 +790,14 @@ def llms_txt():
         f"- [The Key with Bisendra, weekly newsletter]({SUBSTACK})",
         "",
         "## Services",
+        f"- [Sellers]({DOMAIN}/sellers/): pricing, preparation and New York's 2024 disclosure rules",
         f"- [Buyers]({DOMAIN}/buyers/): buying on the South Shore, flood zones, buyer agreements",
-        f"- [Sellers]({DOMAIN}/sellers/): pricing and New York's 2024 disclosure rules",
         f"- [Seniors and downsizing]({DOMAIN}/seniors-downsizing/): SRES help for clients 50+",
         f"- [South Asian families]({DOMAIN}/south-asian-buyers/): gift funds, multigenerational homes",
         f"- [Areas served]({DOMAIN}/areas/)",
         "",
         "## South Shore town guides (by Bisendra Melaram)",
-    ] + [f"- [Buying in {t}, NY]({GUIDE}/towns/{s}/)" for t, s in SOUTH_SHORE_TOWNS] + [
+    ] + [f"- [{t}, NY real estate guide]({GUIDE}/towns/{s}/)" for t, s in SOUTH_SHORE_TOWNS] + [
         f"- [South Shore flood zone guide]({GUIDE}/guides/flood-zones/)",
         "",
     ]

@@ -11,10 +11,10 @@ Each item matches a yellow `[To fill: ...]` box on the site.
 
 ## Needed to rank
 6. Done: LinkedIn, Zillow, Substack and your Google Business Profile are in `SAME_AS`. Add Realtor.com, Homes.com, YouTube and Instagram if you want them.
-7. Other designations to list, with the year earned (the strategy doc mentions AHWD; confirm).
+7. Done: designations and certifications added (SRS, PSA, SRES, ABR, SFR, MRP, AHWD, RSPS). Optional: the year you earned each.
 8. Languages you work in with clients, if any besides English.
 9. Other areas to name (Garden City, central Nassau, Queens?).
-10. How you work with first-time buyers and how you market listings.
+10. How you market listings, how you present pricing to a seller, and how you time a sale with a purchase.
 11. Two or three anonymized examples of SRES or downsizing clients.
 12. Link to the South Asian real estate professional chapter, once it has a public page.
 13. Done: the About page links to your Zillow and Google reviews. Reviews are not copied onto the site without permission.
