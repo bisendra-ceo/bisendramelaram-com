@@ -14,9 +14,11 @@ Each item matches a yellow `[To fill: ...]` box on the site.
 7. Done: designations and certifications added (SRS, PSA, SRES, ABR, SFR, MRP, AHWD, RSPS). Optional: the year you earned each.
 8. Languages you work in with clients, if any besides English.
 9. Other areas to name (Garden City, central Nassau, Queens?).
-10. How you market listings, how you present pricing to a seller, and how you time a sale with a purchase.
-11. Two or three anonymized seller stories, including a downsizing client.
-12. Link to the South Asian real estate professional chapter, once it has a public page.
-13. Done: the About page links to your Zillow and Google reviews. Reviews are not copied onto the site without permission.
+10. How I sell a home (`/how-i-sell-a-home/`), your flagship page. In your words: the first call and walk-through, pricing strategy, prep and staging, marketing, showings, negotiating offers, and keeping a deal on track to closing. Also how you time a sale with a purchase (Buyers page).
+11. Three anonymized seller stories for that page: situation, what you did, how it ended. No names, addresses, prices or identifying details, and only with each client's OK.
+12. Your track record line, in exact wording you approve. No count of homes sold appears anywhere until you confirm it.
+13. Your own view on timing a South Shore listing (Best time to list), whether you refer sellers to attorneys (Cost to sell), and the rest of the yellow boxes on the seller guides.
+14. Community involvement for the About page, only if you want one line there: real organizations and roles you hold. It will describe what you do, never who your clients are.
+15. Done: the About page links to your Zillow and Google reviews. Reviews are not copied onto the site without permission.
 
 Nothing here is invented: no reviews, sales numbers, awards or press were added.

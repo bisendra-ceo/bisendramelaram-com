@@ -13,7 +13,7 @@ Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden 
 
 He is also a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson since 2003, with more than 23 years in New York real estate. His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.
 
-For sellers, that means a price built on real closed sales, a house prepared for the questions buyers ask now, and clear steps from listing to closing. He also represents buyers, often clients who are selling one home and buying the next. He holds the SRS, SRES and ABR designations and the PSA, SFR, MRP, AHWD and RSPS certifications and has long ties to the South Asian community.
+For sellers, that means a price built on real closed sales, a house prepared for the questions buyers ask now, and clear steps from listing to closing. He also represents buyers, often clients who are selling one home and buying the next. He holds the SRS, SRES and ABR designations and the PSA, SFR, MRP, AHWD and RSPS certifications.
 
 He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.
 

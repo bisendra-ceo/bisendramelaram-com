@@ -1,6 +1,6 @@
 # Bisendra Melaram
 
-> Bisendra Melaram, Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. Licensed Real Estate Salesperson since 2003. He mainly lists and sells homes, and also represents buyers, across Long Island, with a focus on the South Shore of Nassau County (Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin, Freeport), sellers 50 and older, and South Asian families.
+> Bisendra Melaram, Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. Licensed Real Estate Salesperson since 2003. He mainly lists and sells homes, and also represents buyers, across Long Island, with a focus on the South Shore of Nassau County (Valley Stream, Lynbrook, Rockville Centre, Oceanside, Baldwin, Freeport).
 
 Office: Keller Williams Greater Nassau, 400 Garden City Plaza, Suite 438, Garden City, NY 11530. Phone 516-873-7100.
 
@@ -16,9 +16,22 @@ Office: Keller Williams Greater Nassau, 400 Garden City Plaza, Suite 438, Garden
 ## Services
 - [Sellers](https://bisendramelaram.com/sellers/): pricing, preparation and New York's 2024 disclosure rules
 - [Buyers](https://bisendramelaram.com/buyers/): buying on the South Shore, flood zones, buyer agreements
-- [Seniors and downsizing](https://bisendramelaram.com/seniors-downsizing/): SRES help for clients 50+
-- [South Asian families](https://bisendramelaram.com/south-asian-buyers/): gift funds, multigenerational homes
+- [Downsizing and later-life moves](https://bisendramelaram.com/downsizing/): SRES designation, selling a long-time home
+- [How Bisendra sells a home](https://bisendramelaram.com/how-i-sell-a-home/): his process from first call to closing
 - [Areas served](https://bisendramelaram.com/areas/)
+- [Site updates](https://bisendramelaram.com/updates/): dated log of changes
+
+## Seller guides (one question per page, with sources)
+- [Pricing a home in Nassau County](https://bisendramelaram.com/sellers/pricing/): How to set a list price for a Nassau County home from closed sales, with 2026 OneKey MLS county data, by seller's agent Bisendra Melaram, PSA.
+- [What it costs to sell](https://bisendramelaram.com/sellers/cost-to-sell/): Seller costs on Long Island: negotiable commission, New York transfer tax at $2 per $500, attorney fees, payoffs, concessions and taxes on the gain.
+- [Best time to list](https://bisendramelaram.com/sellers/best-time-to-sell/): When to list a Nassau County home, from 2025 and 2026 OneKey MLS monthly data: days on market, percent of list price received and new listings.
+- [New York property condition disclosure](https://bisendramelaram.com/sellers/property-condition-disclosure/): What New York home sellers must disclose under Real Property Law 462: who files, when, the flood questions since 2024, and how to prepare.
+- [Selling an inherited home](https://bisendramelaram.com/sellers/inherited-home/): How to sell an inherited home in Nassau County: Surrogate's Court, probate and administration, who signs, taxes on inherited property, and the house itself.
+- [Short sales and pre-foreclosure](https://bisendramelaram.com/sellers/short-sale-pre-foreclosure/): Behind on a Long Island mortgage? New York's 90-day notice, free counseling, short sales and other options, from SFR-certified agent Bisendra Melaram.
+- [Selling for military orders](https://bisendramelaram.com/sellers/military-relocation/): Selling or renting your Long Island home when military orders move you: the IRS five-year suspension, SCRA protections and selling from a distance.
+- [Selling a second home or beach property](https://bisendramelaram.com/sellers/second-home/): Selling a Long Island second home or waterfront property: taxes when it is not your main home, nonresident estimated tax, and flood disclosure.
+- [Choosing a listing agent](https://bisendramelaram.com/sellers/choosing-a-listing-agent/): How to choose a Long Island listing agent: verify the New York license, ask how they price from closed sales, read the listing agreement, negotiate the fee.
+- [Property taxes, grievances and your sale](https://bisendramelaram.com/sellers/property-taxes/): How Nassau County property taxes affect a sale: assessments at 0.1 percent, Town of Hempstead due dates, grieving with ARC, and STAR for the buyer.
 
 ## South Shore town guides (by Bisendra Melaram)
 - [Valley Stream, NY real estate guide](https://longislandhomes.co/towns/valley-stream/)
@@ -28,3 +41,5 @@ Office: Keller Williams Greater Nassau, 400 Garden City Plaza, Suite 438, Garden
 - [Baldwin, NY real estate guide](https://longislandhomes.co/towns/baldwin/)
 - [Freeport, NY real estate guide](https://longislandhomes.co/towns/freeport/)
 - [South Shore flood zone guide](https://longislandhomes.co/guides/flood-zones/)
+- [Compare South Shore towns](https://longislandhomes.co/compare/)
+- [South Shore real estate glossary](https://longislandhomes.co/glossary/)

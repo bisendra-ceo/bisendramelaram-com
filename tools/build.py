@@ -7,7 +7,11 @@ Cloudflare Pages serves the /site folder as is (no build command).
 import json
 import os
 import shutil
+import sys
 from html import escape
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from seller_guides import GUIDES, SOURCES, ONEKEY_2026, ONEKEY_REPORTS, CHECKED, TOWN_LINKS  # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "site")
@@ -76,7 +80,7 @@ GOOGLE_REVIEWS = "https://www.google.com/maps/place/Bisendra+Melaram,+Realtor+-+
 # "[designations]" is filled in by desig_text().
 # Approved by Bisendra on Nov 8, 2026. Do not edit without his OK.
 BIO_SHORT = "Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, NY, and a seller's agent on Long Island's South Shore. He runs the office like a high-performing real estate team, and in 2025 it closed 545 transactions totaling more than $425 million in sales volume. A Licensed Real Estate Salesperson since 2003, he holds the Seller Representative Specialist (SRS) designation and the Pricing Strategy Advisor (PSA) certification, along with SRES, ABR, SFR, MRP, AHWD and RSPS."
-BIO_LONG = ["Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, where he runs the brokerage like a high-performing real estate team with himself at the helm. In 2025 the office closed 545 transactions representing more than $425 million in sales volume, and in the first quarter of 2026 its agents closed 111 units totaling $81.8 million. He works with agents and leadership teams to turn strategy into measurable production and stronger client service.", "He is also a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson since 2003, with more than 23 years in New York real estate. His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.", "For sellers, that means a price built on real closed sales, a house prepared for the questions buyers ask now, and clear steps from listing to closing. He also represents buyers, often clients who are selling one home and buying the next. He holds [designations] and has long ties to the South Asian community.", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
+BIO_LONG = ["Bisendra Melaram is the Team Leader of Keller Williams Greater Nassau in Garden City, where he runs the brokerage like a high-performing real estate team with himself at the helm. In 2025 the office closed 545 transactions representing more than $425 million in sales volume, and in the first quarter of 2026 its agents closed 111 units totaling $81.8 million. He works with agents and leadership teams to turn strategy into measurable production and stronger client service.", "He is also a seller's agent on Long Island's South Shore and a Licensed Real Estate Salesperson since 2003, with more than 23 years in New York real estate. His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.", "For sellers, that means a price built on real closed sales, a house prepared for the questions buyers ask now, and clear steps from listing to closing. He also represents buyers, often clients who are selling one home and buying the next. He holds [designations].", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
 
 SOUTH_SHORE_TOWNS = [
     ("Valley Stream", "valley-stream"),
@@ -137,11 +141,10 @@ KNOWS_ABOUT = [
     "Selling a home on Long Island",
     "Listing and pricing homes on Long Island's South Shore",
     "New York property condition disclosure for sellers",
-    "Seniors downsizing and later-life moves",
+    "Downsizing and later-life moves",
     "Selling one home and buying the next",
     "Short sales and foreclosures",
     "Buying a home on Long Island",
-    "Multigenerational homes",
     "Moving from New York City to Long Island",
     "FEMA flood zones on Long Island",
 ]
@@ -249,9 +252,8 @@ def article_schema(path, title, desc):
 NAV = [
     ("About", "/about/"),
     ("Sellers", "/sellers/"),
+    ("How I sell", "/how-i-sell-a-home/"),
     ("Buyers", "/buyers/"),
-    ("Seniors", "/seniors-downsizing/"),
-    ("South Asian families", "/south-asian-buyers/"),
     ("Areas", "/areas/"),
     ("FAQ", "/faq/"),
     ("Contact", "/contact/"),
@@ -264,7 +266,18 @@ ROBOTS_META = ("index, follow, max-snippet:-1, max-image-preview:large" if LAUNC
 
 def page(path, title, desc, body, graph_extra=(), og_type="website"):
     url = f"{DOMAIN}{path}"
-    graph = core_graph() + list(graph_extra)
+    graph = core_graph() + [dict(n) for n in graph_extra]
+    if 'class="answer"' in body:
+        speak = {"@type": "SpeakableSpecification", "cssSelector": [".answer"]}
+        holder = next((n for n in graph if n.get("@type") in ("ProfilePage", "ContactPage")), None)
+        if holder is None:
+            holder = {"@type": "WebPage", "url": url, "name": title, "description": desc,
+                      "isPartOf": {"@id": f"{DOMAIN}/#website"},
+                      "about": {"@id": PERSON_ID}, "dateModified": UPDATED,
+                      "inLanguage": "en-US"}
+            graph.append(holder)
+        holder["@id"] = f"{url}#webpage"
+        holder["speakable"] = speak
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph},
                     indent=1, ensure_ascii=False)
     nav = "".join(
@@ -320,7 +333,7 @@ def page(path, title, desc, body, graph_extra=(), og_type="website"):
   {BROKERAGE}, {STREET}, {CITY}, {REGION} {ZIP}<br>
   Office <a href="tel:{OFFICE_TEL}">{OFFICE}</a></p>
   <p>South Shore town guides by Bisendra: <a href="{GUIDE}/">longislandhomes.co</a></p>
-  <p class="small">Equal Housing Opportunity. <a href="/fair-housing/">Fair housing notice and standard operating procedures</a>. Page updated {UPDATED_TEXT}.</p>
+  <p class="small">Equal Housing Opportunity. <a href="/fair-housing/">Fair housing notice and standard operating procedures</a>. Page updated {UPDATED_TEXT}. <a href="/updates/">Site updates</a>.</p>
  </div>
 </footer>
 </body>
@@ -406,10 +419,19 @@ add("/", f"{NAME} | Long Island seller's agent, South Shore homes",
 <h2>How does Bisendra help Long Island homeowners sell?</h2>
 <div class="cards">
  <a class="card" href="/sellers/"><h3>Selling your home</h3><p>Pricing from real local sales, preparation, and a plan for the flood and disclosure questions buyers now ask.</p></a>
- <a class="card" href="/seniors-downsizing/"><h3>Downsizing</h3><p>Selling the family home at 50 and older, timed with the move to the next one.</p></a>
- <a class="card" href="/buyers/"><h3>Buying on Long Island</h3><p>Move-up homes, buying while you sell, and families leaving the boroughs for Nassau.</p></a>
- <a class="card" href="/south-asian-buyers/"><h3>South Asian families</h3><p>Deep community relationships and practical help with multigenerational plans and funds from abroad.</p></a>
+ <a class="card" href="/downsizing/"><h3>Downsizing</h3><p>Selling a long-time home and timing it with the move to the next one.</p></a>
+ <a class="card" href="/buyers/"><h3>Buying on Long Island</h3><p>Move-up homes, buying while you sell, and moves from Queens and Brooklyn to Nassau.</p></a>
 </div>
+
+<h2>What do South Shore sellers ask first?</h2>
+<ul>
+ <li><a href="/sellers/pricing/">How do you price a home in Nassau County?</a></li>
+ <li><a href="/sellers/cost-to-sell/">What does it cost to sell on Long Island?</a></li>
+ <li><a href="/sellers/best-time-to-sell/">When is the best time to list?</a></li>
+ <li><a href="/sellers/property-condition-disclosure/">What does New York's disclosure form ask?</a></li>
+ <li><a href="/how-i-sell-a-home/">How does Bisendra sell a home?</a></li>
+</ul>
+<p>See <a href="/sellers/">all seller guides</a>.</p>
 
 <h2>Which South Shore towns does Bisendra cover?</h2>
 <p>He is building a detailed guide for every South Shore town, starting with the six closest to Garden City. Each one covers what drives value there: the LIRR commute, flood zones, school districts and local rules.</p>
@@ -455,7 +477,7 @@ add("/about/", f"About {NAME} | Team Leader, Keller Williams Greater Nassau",
 <p class="sources">Names and categories: <a href="{CRED_SOURCE}">National Association of REALTORS acronym guide</a>.</p>
 
 <h2>Who does he work with?</h2>
-<p>Homeowners selling across Nassau County's South Shore come first, including sellers 50 and older planning their next move. He also represents buyers, often clients who are selling one home and buying the next, and works with South Asian families, where he has long relationships in the community. {todo("languages you speak with clients, if any besides English")}</p>
+<p>Homeowners selling across Nassau County's South Shore come first, including owners who are downsizing or planning a later-life move. He also represents buyers, often clients who are selling one home and buying the next. {todo("languages you speak with clients, if any besides English")}</p>
 
 <h2>Where else can you find him?</h2>
 <ul>
@@ -482,7 +504,7 @@ buyer_faqs = [
     ("What should I check before buying on the South Shore?",
      "Check the FEMA flood zone for the exact address, ask the seller for the flood answers on the New York property condition disclosure, get a flood insurance quote, confirm which school district serves the street, and find out whether the home is in an incorporated village."),
     ("Is Long Island a good move from Queens or Brooklyn?",
-     "For many families it is, if the commute works. The South Shore towns closest to the city sit on the Babylon, Long Beach and Far Rockaway branches of the LIRR, with service to Penn Station and Grand Central Madison. Price, taxes and flood risk vary a lot from one town to the next."),
+     "For many buyers it is, if the commute works. The South Shore towns closest to the city sit on the Babylon, Long Beach and Far Rockaway branches of the LIRR, with service to Penn Station and Grand Central Madison. Price, taxes and flood risk vary a lot from one town to the next."),
 ]
 add("/buyers/", "Buying a home on Long Island's South Shore | Bisendra Melaram",
     "How Bisendra Melaram helps buyers on Long Island's South Shore: commute, flood zones, school districts, taxes, and the written buyer agreement.",
@@ -551,16 +573,20 @@ add("/sellers/", "Selling a home on Long Island's South Shore | Bisendra Melaram
 </ol>
 
 <h2>How does Bisendra price a home?</h2>
-<p>From closed sales, not wishful listings. He holds the Pricing Strategy Advisor (PSA) certification from the National Association of REALTORS. He looks at homes that sold nearby in the last few months, then adjusts for size, condition, lot, flood zone and school district. {todo("how you present pricing to a seller, in your words")}</p>
+<p>From closed sales, not wishful listings. He holds the Pricing Strategy Advisor (PSA) certification from the National Association of REALTORS. He looks at homes that sold nearby in the last few months, then adjusts for size, condition, lot, flood zone and school district. The full method is in <a href="/sellers/pricing/">how to price a home in Nassau County</a>.</p>
 
 <h2>What changed for sellers in 2024?</h2>
-<p>New York removed the $500 credit that let sellers skip the property condition disclosure. The form now asks whether the home is in a FEMA flood zone, whether flood insurance is required or in place, whether there is an elevation certificate, and whether you have filed flood claims or received federal flood aid. Have those answers ready before you list.</p>
+<p>New York removed the $500 credit that let sellers skip the property condition disclosure. The form now asks whether the home is in a FEMA flood zone, whether flood insurance is required or in place, whether there is an elevation certificate, and whether you have filed flood claims or received federal flood aid. Have those answers ready before you list. The <a href="/sellers/property-condition-disclosure/">property condition disclosure guide</a> walks through each one.</p>
 
 <h2>How does Bisendra market a listing?</h2>
-<p>{todo("your listing marketing: photos, video, open houses, the buyer agents you reach, what makes yours different")}</p>
+<p>His full process, marketing included, is on <a href="/how-i-sell-a-home/">how Bisendra sells a home</a>.</p>
 
-<h2>Are you 50 or older and thinking about downsizing?</h2>
-<p>See <a href="/seniors-downsizing/">how Bisendra helps with later-life moves</a>.</p>
+<h2>Are you planning to downsize?</h2>
+<p>See <a href="/downsizing/">how Bisendra helps with downsizing and later-life moves</a>.</p>
+
+<h2>Which seller guides should you read?</h2>
+<p>Each guide answers one question, with the public sources behind it. Start with <a href="/how-i-sell-a-home/">how Bisendra sells a home</a>.</p>
+<ul>{"".join(f'<li><a href="{g["path"]}">{escape(g["short"])}</a></li>' for g in GUIDES)}</ul>
 
 {faq_html(seller_faqs)}
 {cta()}
@@ -570,79 +596,178 @@ add("/sellers/", "Selling a home on Long Island's South Shore | Bisendra Melaram
                      "How Bisendra Melaram prices and sells South Shore homes."),
       faq_schema(seller_faqs)], og_type="article")
 
-# Seniors
-senior_faqs = [
-    ("What is an SRES?",
-     "SRES stands for Seniors Real Estate Specialist, a designation from the National Association of REALTORS for agents trained to help clients 50 and older buy, sell or relocate. Bisendra Melaram holds the SRES designation."),
-    ("When is the right time to downsize?",
-     "When the house costs more in money, time or worry than it gives back. Common signs are stairs that have become hard, rooms nobody uses, and taxes or upkeep that strain a fixed income. The right time is your call, and a good agent will not rush it."),
-    ("Can I buy my next home before I sell this one?",
-     "Sometimes. It depends on your savings, your equity and what a lender will approve. Talk to a lender and your attorney early, and ask Bisendra how sale and purchase dates can be lined up."),
+# Seller guides, one question per page (content lives in tools/seller_guides.py)
+SHORT = {g["path"]: g["short"] for g in GUIDES}
+SHORT.update({"/how-i-sell-a-home/": "How Bisendra sells a home",
+              "/about/": "About Bisendra Melaram",
+              "/sellers/": "Selling on the South Shore"})
+
+
+def guide_trail(g):
+    if g["path"].startswith("/sellers/"):
+        return [("Home", "/"), ("Sellers", "/sellers/"), (g["short"], g["path"])]
+    return [("Home", "/"), (g.get("crumb", g["short"]), g["path"])]
+
+
+def sources_list(keys):
+    items = "".join(f'<li><a href="{SOURCES[k][1]}">{escape(SOURCES[k][0])}</a></li>' for k in keys)
+    return (f'<section class="sources"><h2>Where do these facts come from?</h2><ol>{items}</ol>'
+            f'<p>Sources checked {CHECKED}. This page is general information, not legal or tax advice.</p></section>')
+
+
+def howto_schema(name, steps, path):
+    return {
+        "@type": "HowTo",
+        "name": name,
+        "url": f"{DOMAIN}{path}",
+        "step": [{"@type": "HowToStep", "position": i + 1, "name": n, "text": t}
+                 for i, (n, t) in enumerate(steps)],
+    }
+
+
+def step_heading(name):
+    if name.startswith("How to "):
+        return "How do you " + name[len("How to "):] + "?"
+    if name.startswith("What to do "):
+        return "What should you do " + name[len("What to do "):] + "?"
+    return name
+
+
+def guide_page(g):
+    path = g["path"]
+    trail = guide_trail(g)
+    parts = [crumbs_html(trail), f"<h1>{escape(g['h1'])}</h1>", byline(), answer(g["answer"])]
+    for h, html in g["sections"]:
+        parts.append(f"<h2>{escape(h)}</h2>\n{html}")
+    extra = [breadcrumbs(trail)]
+    if g.get("steps"):
+        name, steps = g["steps"]
+        items = "".join(f"<li>{escape(n)}. {escape(t)}</li>" for n, t in steps)
+        parts.append(f"<h2>{escape(step_heading(name))}</h2>\n<ol>{items}</ol>")
+    if g.get("onekey_reports"):
+        items = "".join(f'<li><a href="{u}">OneKey MLS Local Market Update, Nassau County, {m} 2026</a></li>'
+                        for m, u in ONEKEY_REPORTS)
+        parts.append(f"<h2>Where can you read the monthly OneKey reports?</h2>\n<ul>{items}</ul>")
+    if g.get("guide_link"):
+        label, url = g["guide_link"]
+        parts.append(f'<p>Read the <a href="{url}">{escape(label)}</a> before you fill in the flood questions.</p>')
+    parts.append(faq_html(g["faqs"]))
+    rel = "".join(f'<li><a href="{p}">{escape(SHORT[p])}</a></li>' for p in g["related"])
+    parts.append(f"<h2>What should you read next?</h2>\n<ul>{rel}</ul>")
+    parts.append(f"<p>South Shore town guides: {TOWN_LINKS}.</p>")
+    parts.append(cta())
+    parts.append(sources_list(g["sources"]))
+    art = article_schema(path, g["h1"], g["desc"])
+    art["about"] = {"@type": "Thing", "name": g["about"]}
+    art["citation"] = [{"@type": "CreativeWork", "name": SOURCES[k][0], "url": SOURCES[k][1]}
+                       for k in g["sources"]]
+    extra += [art, faq_schema(g["faqs"])]
+    if g.get("steps"):
+        extra.append(howto_schema(g["steps"][0], g["steps"][1], path))
+    add(path, g["title"], g["desc"], "\n".join(parts), extra, og_type="article")
+
+
+for _g in GUIDES:
+    guide_page(_g)
+
+
+# How I sell a home: his flagship page. His own process, stories and track record
+# go in the [To fill] boxes. Do not publish any sales count until he approves the wording.
+DOM_LOW = min(r[3] for r in ONEKEY_2026)
+DOM_HIGH = max(r[3] for r in ONEKEY_2026)
+hisell_faqs = [
+    ("Who does Bisendra represent when I list with him?",
+     "You, the seller. New York requires agents to explain in writing, on the state's agency disclosure form, who they represent. As your listing agent he owes his duties to you, not to the buyer."),
+    ("What should I gather before the first meeting?",
+     "Your recent tax bills, your deed and survey if you have them, any flood insurance policy and elevation certificate, permits and certificates of occupancy for past work, and a list of repairs you know about."),
+    ("How long does it take to sell a home in Nassau County?",
+     f"In OneKey MLS figures for Nassau County single-family homes, the 2026 median days on market ran from {DOM_LOW} days in the summer to {DOM_HIGH} days in March. Closing usually follows the contract by several more weeks, once the buyer's financing and attorney review are done."),
+    ("Does Bisendra handle the property condition disclosure?",
+     "He helps you prepare for it. The form is the seller's to complete and sign, and since March 20, 2024, most New York sellers must deliver it. It now includes flood questions, so he works through those answers with you before the home goes on the market."),
 ]
-add("/seniors-downsizing/", "Downsizing on Long Island with an SRES agent | Bisendra Melaram",
-    "Bisendra Melaram holds the Seniors Real Estate Specialist (SRES) designation and helps Long Island homeowners 50 and older sell and plan their next move.",
+STORY = ("an anonymized seller story: the situation, what you did, and how it ended. "
+         "No names, addresses, sale prices or details that could identify the client, and only with the client's OK")
+add("/how-i-sell-a-home/", "How Bisendra Melaram sells a home on Long Island's South Shore",
+    "How seller's agent Bisendra Melaram sells a South Shore home, from the first call through pricing, preparation, marketing, offers and closing.",
     f"""
-{crumbs_html([("Home", "/"), ("Seniors and downsizing", "/seniors-downsizing/")])}
-<h1>Downsizing on Long Island with an SRES agent</h1>
+{crumbs_html([("Home", "/"), ("How I sell a home", "/how-i-sell-a-home/")])}
+<h1>How Bisendra Melaram sells a home on Long Island's South Shore</h1>
 {byline()}
-{answer("Bisendra Melaram holds the Seniors Real Estate Specialist (SRES) designation and helps Long Island homeowners 50 and older sell the family home and plan the next one. That can mean a smaller home nearby, a home near children, or a move off Long Island. He works at your pace and with your family, attorney and financial adviser.")}
+{answer("Bisendra Melaram sells South Shore homes in seven stages: a first conversation about your goals, a price built from closed sales, preparation for what inspectors and buyers will notice, marketing, showings, negotiating offers, and managing the sale to closing. He holds the Seller Representative Specialist (SRS) designation and the Pricing Strategy Advisor (PSA) certification.")}
 
-<h2>What does an SRES agent do differently?</h2>
-<p>An SRES agent is trained on the questions that come with a later-life move: timing a sale with a purchase, sorting a house full of belongings, working with adult children, and knowing when to bring in an attorney or tax adviser. {todo("one or two examples, without client names, of how you handled this")}</p>
+<p>{todo("the track record line, in wording you confirm. Nothing about how many homes you have sold goes on the site until you approve the exact words")}</p>
 
-<h2>How do you sell a home you have lived in for decades?</h2>
-<p>One room at a time. Start with a plan for what stays, what goes to family and what gets sold or donated. Then fix the few things a buyer's inspector will flag, and price from what similar homes nearby have sold for.</p>
+<h2>What happens on the first call?</h2>
+<p>The first conversation is about you: why you are selling, when you need to be out, and where you are going next. Then comes a walk-through of the house.</p>
+<p>{todo("how you run the first call and the first walk-through, in your words: what you ask, what you look at, what the seller leaves with")}</p>
 
-<h2>What about the family?</h2>
-<p>Adult children often help, and sometimes live far away. Bisendra keeps everyone you choose in the loop, and takes direction from you.</p>
+<h2>How does Bisendra price your home?</h2>
+<p>From closed sales, not from what neighbors are asking. He looks at similar homes that sold nearby, then adjusts for size, condition, lot, flood zone and school district. The full method is in <a href="/sellers/pricing/">how to price a home in Nassau County</a>.</p>
+<p>{todo("your pricing strategy in your words: how you present the numbers, how you set the list price, and when you recommend a change")}</p>
 
-{faq_html(senior_faqs)}
-{cta()}
-""", [breadcrumbs([("Home", "/"), ("Seniors and downsizing", "/seniors-downsizing/")]),
-      article_schema("/seniors-downsizing/", "Downsizing on Long Island with an SRES agent",
-                     "How Bisendra Melaram helps homeowners 50 and older."),
-      faq_schema(senior_faqs)], og_type="article")
-
-# South Asian families
-sa_faqs = [
-    ("Can I use money from family abroad for a down payment on Long Island?",
-     "Often yes, but lenders have strict paper-trail rules for gift funds and money moved from overseas. Talk to your lender before the money moves, and keep every bank statement and transfer record."),
-    ("Can I buy a home with a separate space for my parents?",
-     "It depends on the town or village and the house. Rules on second kitchens, separate entrances and accessory apartments differ across Nassau County. Check with the town or village building department before you bid on a house for that purpose."),
-    ("Can I sell my Long Island home while living abroad?",
-     "Yes. Many owners sell from overseas with a New York real estate attorney and a power of attorney. Owners who are not US tax residents can face federal tax withholding at closing, so speak with a tax adviser early."),
-]
-add("/south-asian-buyers/", "Long Island real estate for South Asian families | Bisendra Melaram",
-    "Bisendra Melaram has long ties in the South Asian community and helps families sell and buy on Long Island, from multigenerational homes to funds from abroad.",
-    f"""
-{crumbs_html([("Home", "/"), ("South Asian families", "/south-asian-buyers/")])}
-<h1>Long Island real estate for South Asian families</h1>
-{byline()}
-{answer("Bisendra Melaram has long relationships in Long Island's South Asian community and helps families buy and sell across Nassau County. He knows the questions that come up most: using gift funds or savings from abroad, finding a home with room for parents, buying on behalf of family, and selling a home while living overseas.")}
-
-<h2>What questions come up most?</h2>
+<h2>How do you prepare the house?</h2>
+<p>Buyers on the South Shore ask about flood history, permits and the age of the roof and systems. Preparation means answering those questions before a buyer's inspector raises them, then getting the house ready for photos.</p>
 <ul>
- <li>How to document money from family or accounts abroad for a lender.</li>
- <li>Which homes and which towns allow space for parents or extended family.</li>
- <li>How to buy for a parent or relative, and whose name goes on the deed.</li>
- <li>How to sell from overseas with an attorney and a power of attorney.</li>
+ <li>Repairs an inspector will flag, handled or priced in.</li>
+ <li>Open permits and certificates of occupancy checked with the town or village.</li>
+ <li>The <a href="/sellers/property-condition-disclosure/">property condition disclosure</a>, flood answers included, ready before listing.</li>
+ <li>Decluttering and staging, room by room.</li>
 </ul>
+<p>{todo("your prep and staging approach: who you bring in, what you pay for or arrange, and what you tell sellers to skip")}</p>
 
-<h2>Does Bisendra speak languages other than English?</h2>
-<p>{todo("languages you work in with clients, if any")}</p>
+<h2>How does Bisendra market a listing?</h2>
+<p>{todo("your listing marketing: photography and video, the listing description, the MLS, open houses, outreach to buyer agents, social media, The Key with Bisendra newsletter, and anything only you do")}</p>
 
-<h2>Will Bisendra suggest neighborhoods based on who lives there?</h2>
-<p>No. Fair housing law bars agents from steering anyone toward or away from a neighborhood. Bisendra helps you compare towns on facts you choose: price, commute, flood risk, taxes and school district. The choice of where to live is always yours.</p>
+<h2>How are showings handled?</h2>
+<p>{todo("how you schedule and run showings and open houses, and how you report feedback to the seller")}</p>
 
-<h2>Is there a South Asian real estate professionals group?</h2>
-<p>{todo("details and link for the South Asian real estate professional chapter, once it has a public page")}</p>
+<h2>How do you compare and negotiate offers?</h2>
+<p>An offer is more than a price. Compare the financing and down payment, the inspection and mortgage contingencies, whether the buyer has a home to sell first, the closing date, and any credits requested. A higher price with a weak contingency can be the worse offer.</p>
+<p>{todo("how you negotiate for sellers: handling multiple offers, counteroffers, and repair requests after inspection")}</p>
 
-{faq_html(sa_faqs)}
+<h2>What happens between contract and closing?</h2>
+<p>On Long Island, the attorneys draw up the contract once the offer is accepted. Then come the buyer's inspection, appraisal and mortgage commitment, the title search, and a final walk-through before closing. At closing, your mortgage payoff, the New York transfer tax, the commission and any tax adjustments come out of the proceeds. See <a href="/sellers/cost-to-sell/">what it costs to sell</a>.</p>
+<p>{todo("how you keep a deal on track to closing: who you coordinate with and how often the seller hears from you")}</p>
+
+<h2>What have South Shore sellers been through with Bisendra?</h2>
+<p>{todo("Story 1, " + STORY)}</p>
+<p>{todo("Story 2, " + STORY)}</p>
+<p>{todo("Story 3, " + STORY)}</p>
+<p>Read what clients wrote on <a href="{ZILLOW}">his Zillow profile</a> and <a href="{GOOGLE_REVIEWS}">his Google profile</a>.</p>
+
+<h2>Which seller guides go deeper?</h2>
+<ul>{"".join(f'<li><a href="{g["path"]}">{escape(g["short"])}</a></li>' for g in GUIDES)}</ul>
+
+{faq_html(hisell_faqs)}
 {cta()}
-""", [breadcrumbs([("Home", "/"), ("South Asian families", "/south-asian-buyers/")]),
-      article_schema("/south-asian-buyers/", "Long Island real estate for South Asian families",
-                     "How Bisendra Melaram helps South Asian families buy and sell on Long Island."),
-      faq_schema(sa_faqs)], og_type="article")
+<section class="sources"><h2>Where do these facts come from?</h2><ol>
+<li><a href="{SOURCES['dos_1736'][1]}">{escape(SOURCES['dos_1736'][0])}</a></li>
+<li><a href="{SOURCES['nysba'][1]}">{escape(SOURCES['nysba'][0])}</a></li>
+<li><a href="{SOURCES['onekey_page'][1]}">{escape(SOURCES['onekey_page'][0])}</a></li>
+</ol><p>Sources checked {CHECKED}.</p></section>
+""", [breadcrumbs([("Home", "/"), ("How I sell a home", "/how-i-sell-a-home/")]),
+      article_schema("/how-i-sell-a-home/", "How Bisendra Melaram sells a home on Long Island's South Shore",
+                     "His process from the first call to closing."),
+      faq_schema(hisell_faqs)], og_type="article")
+
+
+# Updates log. Add a dated line each time a page changes in a way readers would notice.
+UPDATES = [
+    ("2026-11-08", "November 8, 2026",
+     "Added eleven seller guides, each built on public sources: pricing, cost to sell, best time to list, the property condition disclosure, "
+     "inherited homes, downsizing, short sales, military relocation, second homes, choosing a listing agent, and property taxes. Added the "
+     "How I sell a home page. Nassau County market figures run through September 2026, from OneKey MLS."),
+]
+upd = "".join(f'<li><time datetime="{d}">{t}</time>. {escape(x)}</li>' for d, t, x in UPDATES)
+add("/updates/", "Site updates | Bisendra Melaram",
+    "A dated log of changes to bisendramelaram.com: new seller guides, refreshed market figures and corrections.",
+    f"""
+{crumbs_html([("Home", "/"), ("Updates", "/updates/")])}
+<h1>What has changed on this site?</h1>
+{updated_line()}
+{answer("This page logs every meaningful change to bisendramelaram.com, newest first. Market figures come from OneKey MLS monthly reports for Nassau County and are refreshed as each report comes out. Tax dates, grievance windows and rules are checked against the official sources named on each page.")}
+<ul>{upd}</ul>
+""", [breadcrumbs([("Home", "/"), ("Updates", "/updates/")])])
 
 # Areas
 add("/areas/", "Areas Bisendra Melaram serves on Long Island's South Shore",
@@ -672,15 +797,13 @@ faqs = home_faqs + [
     ("What is a Seller Representative Specialist (SRS)?",
      "SRS is a designation for agents trained in representing home sellers. It is awarded by the Real Estate Business Institute, an affiliate of the National Association of REALTORS. Bisendra Melaram holds the SRS designation, along with the Pricing Strategy Advisor (PSA) certification for pricing homes from market data."),
     ("What does SRES mean after Bisendra Melaram's name?",
-     "SRES means Seniors Real Estate Specialist, a National Association of REALTORS designation for agents trained to help clients 50 and older."),
+     "SRES means Seniors Real Estate Specialist, a National Association of REALTORS designation for agents trained in later-life moves, such as downsizing and selling a long-time home."),
     ("Is Bisendra Melaram a listing agent or a buyer's agent?",
      "Both, with a preference for sellers. Most of his work is listing and selling homes on Long Island's South Shore as a seller's agent. He also represents buyers, including clients selling one home and buying the next, under a written buyer agreement."),
     ("Does Bisendra Melaram work with buyers?",
      "Yes. He represents buyers across Long Island's South Shore, from the written buyer agreement through closing. He checks the flood zone, school district and village status of every home a buyer likes and builds offers from recent closed sales nearby."),
-    ("Does Bisendra Melaram help families moving from New York City to Long Island?",
+    ("Does Bisendra Melaram help buyers moving from New York City to Long Island?",
      "Yes. Many South Shore buyers come from Queens and Brooklyn. His town guides list each town's LIRR stations and branches so you can compare commutes."),
-    ("Does Bisendra Melaram work with South Asian families?",
-     "Yes. He has long relationships in the South Asian community and helps with questions like gift funds from abroad and homes with room for parents. He follows fair housing law and never steers clients toward or away from any area."),
     ("Where is Bisendra Melaram's office?",
      f"Keller Williams Greater Nassau, {STREET}, {CITY}, {REGION} {ZIP}. Office phone {OFFICE}."),
 ]
@@ -796,7 +919,7 @@ def llms_txt():
         "",
         f"> {CANONICAL} He mainly lists and sells homes, and also represents buyers, across Long Island, with a focus on the "
         "South Shore of Nassau County (Valley Stream, Lynbrook, Rockville Centre, Oceanside, "
-        "Baldwin, Freeport), sellers 50 and older, and South Asian families.",
+        "Baldwin, Freeport).",
         "",
         f"Office: {BROKERAGE}, {STREET}, {CITY}, {REGION} {ZIP}. Phone {OFFICE}.",
         "",
@@ -812,13 +935,19 @@ def llms_txt():
         "## Services",
         f"- [Sellers]({DOMAIN}/sellers/): pricing, preparation and New York's 2024 disclosure rules",
         f"- [Buyers]({DOMAIN}/buyers/): buying on the South Shore, flood zones, buyer agreements",
-        f"- [Seniors and downsizing]({DOMAIN}/seniors-downsizing/): SRES help for clients 50+",
-        f"- [South Asian families]({DOMAIN}/south-asian-buyers/): gift funds, multigenerational homes",
+        f"- [Downsizing and later-life moves]({DOMAIN}/downsizing/): SRES designation, selling a long-time home",
+        f"- [How Bisendra sells a home]({DOMAIN}/how-i-sell-a-home/): his process from first call to closing",
         f"- [Areas served]({DOMAIN}/areas/)",
+        f"- [Site updates]({DOMAIN}/updates/): dated log of changes",
+        "",
+        "## Seller guides (one question per page, with sources)",
+    ] + [f"- [{g['short']}]({DOMAIN}{g['path']}): {g['desc']}" for g in GUIDES if g['path'] != '/downsizing/'] + [
         "",
         "## South Shore town guides (by Bisendra Melaram)",
     ] + [f"- [{t}, NY real estate guide]({GUIDE}/towns/{s}/)" for t, s in SOUTH_SHORE_TOWNS] + [
         f"- [South Shore flood zone guide]({GUIDE}/guides/flood-zones/)",
+        f"- [Compare South Shore towns]({GUIDE}/compare/)",
+        f"- [South Shore real estate glossary]({GUIDE}/glossary/)",
         "",
     ]
     return "\n".join(lines)
