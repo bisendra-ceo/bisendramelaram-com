@@ -4,8 +4,8 @@ Each item matches a yellow `[To fill: ...]` box on the site.
 
 ## Needed to launch
 1. Headshot, at least 800 by 800 pixels (`site/assets/bisendra-melaram.jpg`). Also used as the social share image.
-2. Your LinkedIn About section and experience, pasted in. LinkedIn blocks automated reads, so the bio is written from confirmed facts, Zillow and Substack for now.
-3. The leadership title you're allowed to show, cleared with your broker (see SETUP.md compliance note). The site says "leads and develops agents" until then.
+2. Done: LinkedIn About section received.
+3. Done: bio written from your LinkedIn About section (see BIO.md). Still open: any title beyond "leads Keller Williams Greater Nassau", cleared with your broker first.
 4. Public email address. Cell number only if you want it public.
 5. Fair housing notice and KW Greater Nassau SOP links, from your broker.
 

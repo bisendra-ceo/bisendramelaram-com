@@ -49,6 +49,9 @@ ZILLOW = "https://www.zillow.com/profile/bisendra"
 SUBSTACK = "https://bisendra.substack.com/"
 GOOGLE_REVIEWS = "https://share.google/mLQQ2lENiVTWTjWSE"
 
+BIO_SHORT = "Bisendra Melaram is a Licensed Real Estate Salesperson based in Garden City, New York, with more than 23 years in New York real estate. He leads Keller Williams Greater Nassau, holds the Seniors Real Estate Specialist (SRES) designation, and helps buyers and sellers across Long Island's South Shore. He writes and speaks about real estate strategy and AI."
+BIO_LONG = ['Bisendra Melaram has worked in New York real estate for more than 23 years. He is a Licensed Real Estate Salesperson based in Garden City, where he leads Keller Williams Greater Nassau and works with agents and leadership teams to turn strategy into steady results and better client service.', 'His career runs through complex markets, distressed properties, shifting buyer expectations and fast changes in technology. Earlier roles in systems integration and facilities management shaped how he approaches process and technology today.', "For buyers and sellers, that means a plan built on real data and clear steps. He holds the Seniors Real Estate Specialist (SRES) designation, works across Long Island's South Shore, and has long ties to the South Asian community.", 'He writes The Key with Bisendra, a weekly newsletter, and speaks about real estate strategy, team performance and the practical use of AI in real estate.']
+
 SOUTH_SHORE_TOWNS = [
     ("Valley Stream", "valley-stream"),
     ("Lynbrook", "lynbrook"),
@@ -358,7 +361,7 @@ add("/", f"{NAME} | Long Island and South Shore real estate agent",
 
 <h2>Why work with an agent licensed since {SINCE}?</h2>
 <p>Twenty-three years in this market means he has worked through rising rates, falling rates, Hurricane Sandy and the rebuild that followed, and the flood disclosure rules New York added in 2024. That history shapes how he prices homes and what he tells buyers to check before they bid.</p>
-<p>{todo("two or three specifics in your own words: years in the business, homes sold, towns you have sold in most, anything a client would repeat")}</p>
+<p>{BIO_SHORT}</p>
 
 {faq_html(home_faqs)}
 {cta()}
@@ -373,12 +376,12 @@ add("/about/", f"About {NAME} | Long Island real estate agent since 2003",
 {answer("Bisendra Melaram is a New York Licensed Real Estate Salesperson based at Keller Williams Greater Nassau, 400 Garden City Plaza in Garden City. He has been licensed since 2003, holds the National Association of REALTORS Seniors Real Estate Specialist (SRES) designation, and works with buyers and sellers across Long Island's South Shore.")}
 <div class="photo">{todo("headshot")}</div>
 
-<h2>How long has Bisendra been in real estate?</h2>
-<p>Bisendra has worked in New York real estate since {SINCE}, when he earned his salesperson license. Over more than two decades he has helped buyers, sellers and renters, and today he splits his time between his own clients and coaching the agents around him at Keller Williams Greater Nassau. {todo("how you got into real estate, in two or three sentences; paste your LinkedIn About section and I will work it in")}</p>
-<p>Every week he writes <a href="{SUBSTACK}">The Key with Bisendra</a>, a newsletter on how homeowners sell for top dollar and how agents build a business that lasts.</p>
+<h2>What is Bisendra's background?</h2>
+{"".join(f"<p>{x}</p>" for x in BIO_LONG[:2])}
 
-<h2>What is his role at Keller Williams Greater Nassau?</h2>
-<p>He is affiliated with Keller Williams Greater Nassau in Garden City, where he also leads and develops agents. {todo("the leadership title you want shown here, cleared with your broker first; see SETUP.md compliance note")}</p>
+<h2>What does that mean for his clients?</h2>
+<p>{BIO_LONG[2]}</p>
+<p>{BIO_LONG[3].replace("The Key with Bisendra", f'<a href="{SUBSTACK}">The Key with Bisendra</a>')}</p>
 
 <h2>What credentials does he hold?</h2>
 <ul>
