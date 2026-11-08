@@ -38,9 +38,16 @@ CANONICAL = (f"{NAME}, {LICENSE} with {BROKERAGE} in Garden City, NY, "
 # Paste profile URLs here as you claim them (Google profile, Zillow,
 # Realtor.com, Homes.com, LinkedIn, YouTube, Substack, Instagram ...).
 SAME_AS = [
-    # "https://www.linkedin.com/in/REPLACE",
-    # "https://bisendra.substack.com",
+    "https://www.linkedin.com/in/realtor/",
+    "https://www.zillow.com/profile/bisendra",
+    "https://bisendra.substack.com/",
+    # Add the full Google Business Profile URL here (not the share.google
+    # short link), plus Realtor.com, Homes.com, YouTube and Instagram.
 ]
+LINKEDIN = "https://www.linkedin.com/in/realtor/"
+ZILLOW = "https://www.zillow.com/profile/bisendra"
+SUBSTACK = "https://bisendra.substack.com/"
+GOOGLE_REVIEWS = "https://share.google/mLQQ2lENiVTWTjWSE"
 
 SOUTH_SHORE_TOWNS = [
     ("Valley Stream", "valley-stream"),
@@ -367,7 +374,8 @@ add("/about/", f"About {NAME} | Long Island real estate agent since 2003",
 <div class="photo">{todo("headshot")}</div>
 
 <h2>How long has Bisendra been in real estate?</h2>
-<p>He has held a New York real estate license since {SINCE}. {todo("how you got into real estate, in two or three sentences")}</p>
+<p>Bisendra has worked in New York real estate since {SINCE}, when he earned his salesperson license. Over more than two decades he has helped buyers, sellers and renters, and today he splits his time between his own clients and coaching the agents around him at Keller Williams Greater Nassau. {todo("how you got into real estate, in two or three sentences; paste your LinkedIn About section and I will work it in")}</p>
+<p>Every week he writes <a href="{SUBSTACK}">The Key with Bisendra</a>, a newsletter on how homeowners sell for top dollar and how agents build a business that lasts.</p>
 
 <h2>What is his role at Keller Williams Greater Nassau?</h2>
 <p>He is affiliated with Keller Williams Greater Nassau in Garden City, where he also leads and develops agents. {todo("the leadership title you want shown here, cleared with your broker first; see SETUP.md compliance note")}</p>
@@ -384,13 +392,15 @@ add("/about/", f"About {NAME} | Long Island real estate agent since 2003",
 
 <h2>Where else can you find him?</h2>
 <ul>
- <li>His weekly newsletter, The Key with Bisendra, on Substack {todo("Substack URL")}</li>
+ <li><a href="{LINKEDIN}">LinkedIn</a></li>
+ <li><a href="{ZILLOW}">Zillow agent profile</a></li>
+ <li><a href="{SUBSTACK}">The Key with Bisendra</a>, his weekly newsletter on Substack</li>
  <li>South Shore town guides at <a href="{GUIDE}/">longislandhomes.co</a></li>
- <li>{todo("LinkedIn, Google profile, Zillow, Realtor.com, Homes.com, YouTube, Instagram URLs")}</li>
+ <li>{todo("Realtor.com, Homes.com, YouTube and Instagram URLs, if you want them listed")}</li>
 </ul>
 
 <h2>What do clients say?</h2>
-<p>{todo("link to your Google and Zillow reviews once they are live; do not paste reviews here without the reviewer's permission")}</p>
+<p>Read what past clients wrote on <a href="{ZILLOW}">his Zillow profile</a> and <a href="{GOOGLE_REVIEWS}">his Google profile</a>.</p>
 {cta()}
 """, [breadcrumbs([("Home", "/"), ("About", "/about/")]),
       {"@type": "ProfilePage", "url": f"{DOMAIN}/about/",
@@ -699,6 +709,9 @@ def llms_txt():
         f"- [About {NAME}]({DOMAIN}/about/): license, SRES designation, who he works with",
         f"- [FAQ]({DOMAIN}/faq/): common questions about working with him",
         f"- [Contact]({DOMAIN}/contact/): office phone and address",
+        f"- [LinkedIn]({LINKEDIN})",
+        f"- [Zillow profile and reviews]({ZILLOW})",
+        f"- [The Key with Bisendra, weekly newsletter]({SUBSTACK})",
         "",
         "## Services",
         f"- [Buyers]({DOMAIN}/buyers/): buying on the South Shore, flood zones, buyer agreements",
